@@ -1,0 +1,21 @@
+{
+    "name": "EKT Tourism Map",
+    "short_name": "EKT Map",
+    "description": "Восточный Казахстан туристік картасы",
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#2d6a4f",
+    "background_color": "#f5f5f5",
+    "icons": [
+        {
+            "src": "android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
