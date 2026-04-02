@@ -1,6 +1,5 @@
 // ============================================
 // ДАННЫЕ О МЕСТАХ ВКО
-// ФОТОГРАФИИ БЕРУТСЯ ИЗ ПАПКИ images/
 // ============================================
 const places = [
     {
@@ -137,21 +136,21 @@ function renderPlacesList() {
     container.innerHTML = '';
 
     places.forEach(place => {
-        const li = document.createElement('li');
-        li.className = 'place-card';
-        li.innerHTML = `
+        const div = document.createElement('div');
+        div.className = 'place-card';
+        div.innerHTML = `
             <img class="place-img" src="${place.image}" alt="${place.name}" onerror="this.src='https://via.placeholder.com/60x60?text=🏔️'">
             <div class="place-info">
                 <div class="place-name">${place.name}</div>
                 <div class="place-desc">${place.description.substring(0, 65)}...</div>
             </div>
         `;
-        li.addEventListener('click', () => {
+        div.addEventListener('click', () => {
             showPopup(place);
             showPreview(place);
             flyToPlace(place);
         });
-        container.appendChild(li);
+        container.appendChild(div);
     });
 }
 
@@ -206,6 +205,18 @@ function showPreview(place) {
     meta.innerHTML = `📅 ${place.bestSeason} &nbsp;|&nbsp; 💡 ${place.travelTips}`;
 
     card.style.display = 'block';
+    
+    // ДЛЯ ТЕЛЕФОНА: автоматически прокручиваем к карточке
+    if (window.innerWidth <= 768) {
+        setTimeout(() => {
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Разворачиваем панель, если она свёрнута
+            const panel = document.getElementById('sidePanel');
+            if (panel && !panel.classList.contains('expanded')) {
+                panel.classList.add('expanded');
+            }
+        }, 100);
+    }
 
     const btn = document.getElementById('previewRouteBtn');
     const newBtn = btn.cloneNode(true);
@@ -297,6 +308,17 @@ async function buildRoute(place) {
 
         drawRoute(route.geometry);
         fitBounds(route.geometry.coordinates);
+        
+        // ДЛЯ ТЕЛЕФОНА: прокручиваем к результату маршрута
+        if (window.innerWidth <= 768) {
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const panel = document.getElementById('sidePanel');
+                if (panel && !panel.classList.contains('expanded')) {
+                    panel.classList.add('expanded');
+                }
+            }, 100);
+        }
 
     } catch (error) {
         resultDiv.innerHTML = '<p>❌ Не удалось построить маршрут</p><p>Проверьте интернет</p>';
